@@ -3,7 +3,10 @@ import { Request, Response } from 'express'; // Importa los tipos de Request y R
 
 export const crearPregunta = async(req:Request, res:Response) => {
     try {
-        const pregunta = req.body.pregunta
+        interface RequestBody {
+            pregunta: string;
+        }
+        const pregunta: RequestBody = req.body.pregunta
         const newPregunta = {
             preguntas: pregunta,
         }
@@ -17,7 +20,11 @@ export const crearPregunta = async(req:Request, res:Response) => {
 
 export const responderPregunta = async(req:Request, res:Response) => {
     try {
-        const {id, respuesta} =  req.body
+        interface RequestBody {
+            id: string,
+            respuesta: string | number;
+        }
+        const {id, respuesta}: RequestBody =  req.body
         const pregunta = await PreguntasModel.findById(id)
         const preguntas = pregunta?.preguntas
         pregunta?.respuestas.push(respuesta)
