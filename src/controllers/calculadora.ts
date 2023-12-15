@@ -24,13 +24,13 @@ export const operacion = async(req:Request, res:Response) => {
         }else if(dividir.test(operacion)){
             op = "dividir"
             if(numeroDos === 0){
-                throw new Error("no es posible dividir por cero")
+                return res.status(400).json({message: "no es posible dividir por cero"})
             }
             resultado = parseFloat((numeroUno / numeroDos).toFixed(2))
         }else if(restar.test(operacion)){
             op = "restar"
             resultado = parseFloat((numeroUno - numeroDos).toFixed(2))
-        }else throw new Error("No encuentro la operacion solicitada")
+        }else return res.status(400).json({message: "no encuentro la operacion solicitada"})
         const nuevaOperacion =  new CalculadoraModel({numeroUno, numeroDos, operacion:op, resultado})
         await nuevaOperacion.save()
         return res.status(201).json({ message: `El resultado de ${op} ${numeroUno} con ${numeroDos} es: ${resultado}`, resultado});
